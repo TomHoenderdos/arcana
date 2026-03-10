@@ -9,6 +9,8 @@ defmodule ArcanaWeb.Layouts do
   Phoenix LiveView JavaScript, making the dashboard self-contained.
   """
   def root(assigns) do
+    assigns = assign(assigns, :base_path, base_path_from_conn(assigns))
+
     ~H"""
     <!DOCTYPE html>
     <html lang="en">
@@ -35,6 +37,14 @@ defmodule ArcanaWeb.Layouts do
     </html>
     """
   end
+
+  defp base_path_from_conn(%{conn: conn}) do
+    {_view, _opts, meta} = conn.private.phoenix_live_view
+    get_in(meta, [:extra, :session, Access.elem(2), Access.at(1)])
+  end
+
+  defp base_path_from_conn(%{base_path: base_path}), do: base_path
+  defp base_path_from_conn(_assigns), do: "/arcana"
 
   def app(assigns) do
     ~H"""

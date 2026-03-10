@@ -19,10 +19,11 @@ defmodule ArcanaWeb.GraphLive do
   @impl true
   def mount(_params, session, socket) do
     repo = get_repo_from_session(session)
+    base_path = get_base_path_from_session(session)
 
     {:ok,
      socket
-     |> assign(repo: repo)
+     |> assign(repo: repo, base_path: base_path)
      |> assign(
        current_subtab: :entities,
        selected_collection: nil,

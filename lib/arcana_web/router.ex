@@ -106,7 +106,7 @@ defmodule ArcanaWeb.Router do
       [
         session: {__MODULE__, :__session__, session_args},
         root_layout: {ArcanaWeb.Layouts, :root},
-        on_mount: [ArcanaWeb.Hooks.AssignBasePath | List.wrap(options[:on_mount])]
+        on_mount: List.wrap(options[:on_mount])
       ],
       [
         private: %{live_socket_path: live_socket_path},

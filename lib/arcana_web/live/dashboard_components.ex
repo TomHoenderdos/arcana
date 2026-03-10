@@ -198,4 +198,8 @@ defmodule ArcanaWeb.DashboardComponents do
     session["repo"] || Application.get_env(:arcana, :repo) ||
       raise "Missing :arcana, :repo config"
   end
+
+  def get_base_path_from_session(session) do
+    session["base_path"] || "/arcana"
+  end
 end
