@@ -57,9 +57,11 @@ defmodule ArcanaWeb.Router do
       end
 
     quote bind_quoted: binding() do
+      prefix = Phoenix.Router.scoped_path(__MODULE__, path)
+
       scope path, alias: false, as: false do
         {session_name, session_opts, route_opts} =
-          ArcanaWeb.Router.__options__(path, opts)
+          ArcanaWeb.Router.__options__(prefix, opts)
 
         import Phoenix.Router, only: [get: 4]
         import Phoenix.LiveView.Router, only: [live: 4, live_session: 3]
