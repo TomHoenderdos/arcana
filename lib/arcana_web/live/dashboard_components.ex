@@ -9,11 +9,12 @@ defmodule ArcanaWeb.DashboardComponents do
   """
   attr(:stats, :map, required: true)
   attr(:current_tab, :atom, required: true)
+  attr(:base_path, :string, required: true)
   slot(:inner_block, required: true)
 
   def dashboard_layout(assigns) do
     ~H"""
-    <link rel="stylesheet" href={"/arcana/css-#{ArcanaWeb.Assets.current_hash(:css)}"} />
+    <link rel="stylesheet" href={"#{@base_path}/css-#{ArcanaWeb.Assets.current_hash(:css)}"} />
     <div class="arcana-dashboard">
       <div class="arcana-stats">
         <div class="arcana-brand">Arcana</div>
@@ -43,14 +44,14 @@ defmodule ArcanaWeb.DashboardComponents do
       </div>
 
       <nav class="arcana-tabs">
-        <.nav_link href="/arcana/documents" active={@current_tab == :documents}>Documents</.nav_link>
-        <.nav_link href="/arcana/collections" active={@current_tab == :collections}>Collections</.nav_link>
-        <.nav_link href="/arcana/graph" active={@current_tab == :graph}>Graph</.nav_link>
-        <.nav_link href="/arcana/search" active={@current_tab == :search}>Search</.nav_link>
-        <.nav_link href="/arcana/ask" active={@current_tab == :ask}>Ask</.nav_link>
-        <.nav_link href="/arcana/evaluation" active={@current_tab == :evaluation}>Evaluation</.nav_link>
-        <.nav_link href="/arcana/maintenance" active={@current_tab == :maintenance}>Maintenance</.nav_link>
-        <.nav_link href="/arcana/info" active={@current_tab == :info}>Info</.nav_link>
+        <.nav_link href={"#{@base_path}/documents"} active={@current_tab == :documents}>Documents</.nav_link>
+        <.nav_link href={"#{@base_path}/collections"} active={@current_tab == :collections}>Collections</.nav_link>
+        <.nav_link href={"#{@base_path}/graph"} active={@current_tab == :graph}>Graph</.nav_link>
+        <.nav_link href={"#{@base_path}/search"} active={@current_tab == :search}>Search</.nav_link>
+        <.nav_link href={"#{@base_path}/ask"} active={@current_tab == :ask}>Ask</.nav_link>
+        <.nav_link href={"#{@base_path}/evaluation"} active={@current_tab == :evaluation}>Evaluation</.nav_link>
+        <.nav_link href={"#{@base_path}/maintenance"} active={@current_tab == :maintenance}>Maintenance</.nav_link>
+        <.nav_link href={"#{@base_path}/info"} active={@current_tab == :info}>Info</.nav_link>
       </nav>
 
       <div class="arcana-content">

@@ -16,14 +16,13 @@ defmodule ArcanaWeb.DashboardLive do
   use Phoenix.LiveView
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket, layout: false}
+  def mount(_params, session, socket) do
+    base_path = session["base_path"] || "/arcana"
+    {:ok, push_navigate(socket, to: "#{base_path}/documents")}
   end
 
   @impl true
   def render(assigns) do
-    ~H"""
-    <script>window.location.href = window.location.pathname + "/documents";</script>
-    """
+    ~H""
   end
 end

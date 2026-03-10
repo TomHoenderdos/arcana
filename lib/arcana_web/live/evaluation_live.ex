@@ -193,7 +193,7 @@ defmodule ArcanaWeb.EvaluationLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:evaluation}>
+    <.dashboard_layout stats={@stats} current_tab={:evaluation} base_path={@base_path}>
       <div class="arcana-evaluation">
         <h2>Evaluation</h2>
         <p class="arcana-tab-description">

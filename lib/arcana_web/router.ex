@@ -49,7 +49,7 @@ defmodule ArcanaWeb.Router do
     quote bind_quoted: binding() do
       scope path, alias: false, as: false do
         {session_name, session_opts, route_opts} =
-          ArcanaWeb.Router.__options__(opts)
+          ArcanaWeb.Router.__options__(path, opts)
 
         import Phoenix.Router, only: [get: 4]
         import Phoenix.LiveView.Router, only: [live: 4, live_session: 3]
@@ -82,18 +82,18 @@ defmodule ArcanaWeb.Router do
   defp expand_alias(other, _env), do: other
 
   @doc false
-  def __options__(options) do
+  def __options__(base_path, options) do
     live_socket_path = Keyword.get(options, :live_socket_path, "/live")
     repo = Keyword.get(options, :repo)
 
-    session_args = [repo]
+    session_args = [repo, base_path]
 
     {
       :arcana_dashboard,
       [
         session: {__MODULE__, :__session__, session_args},
         root_layout: {ArcanaWeb.Layouts, :root},
-        on_mount: options[:on_mount] || nil
+        on_mount: [ArcanaWeb.Hooks.AssignBasePath | List.wrap(options[:on_mount])]
       ],
       [
         private: %{live_socket_path: live_socket_path},
@@ -103,7 +103,10 @@ defmodule ArcanaWeb.Router do
   end
 
   @doc false
-  def __session__(_conn, repo) do
-    %{"repo" => repo || Application.get_env(:arcana, :repo)}
+  def __session__(_conn, repo, base_path) do
+    %{
+      "repo" => repo || Application.get_env(:arcana, :repo),
+      "base_path" => base_path
+    }
   end
 end

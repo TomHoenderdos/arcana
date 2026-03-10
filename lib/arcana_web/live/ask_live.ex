@@ -355,7 +355,7 @@ defmodule ArcanaWeb.AskLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:ask}>
+    <.dashboard_layout stats={@stats} current_tab={:ask} base_path={@base_path}>
       <div class="arcana-ask">
         <h2>Ask</h2>
         <p class="arcana-tab-description">
@@ -651,6 +651,7 @@ defmodule ArcanaWeb.AskLive do
                 matched_entities={Map.get(@ask_context, :matched_entities, [])}
                 matched_relationships={Map.get(@ask_context, :matched_relationships, [])}
                 expanded={@graph_context_expanded}
+                base_path={@base_path}
               />
             <% end %>
 
@@ -714,7 +715,7 @@ defmodule ArcanaWeb.AskLive do
                       <span class="arcana-entity-name"><%= entity.name %></span>
                       <span class="arcana-entity-type"><%= entity.type %></span>
                       <%= if Map.get(entity, :id) do %>
-                        <a href={"/arcana/graph?entity=#{entity.id}"} class="arcana-view-in-graph">
+                        <a href={"#{@base_path}/graph?entity=#{entity.id}"} class="arcana-view-in-graph">
                           View in Graph
                         </a>
                       <% end %>

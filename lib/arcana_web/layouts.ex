@@ -30,7 +30,7 @@ defmodule ArcanaWeb.Layouts do
       </head>
       <body>
         {@inner_content}
-        <script defer src="/assets/js/app.js"></script>
+        <script defer src={"#{@base_path}/js-#{ArcanaWeb.Assets.current_hash(:js)}"}></script>
       </body>
     </html>
     """

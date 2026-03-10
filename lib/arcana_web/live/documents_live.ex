@@ -239,7 +239,7 @@ defmodule ArcanaWeb.DocumentsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:documents}>
+    <.dashboard_layout stats={@stats} current_tab={:documents} base_path={@base_path}>
       <div class="arcana-documents">
         <%= if @viewing_document do %>
           <.document_detail

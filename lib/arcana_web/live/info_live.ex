@@ -261,7 +261,7 @@ defmodule ArcanaWeb.InfoLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:info}>
+    <.dashboard_layout stats={@stats} current_tab={:info} base_path={@base_path}>
       <div class="arcana-info">
         <h2>Info</h2>
         <p class="arcana-tab-description">

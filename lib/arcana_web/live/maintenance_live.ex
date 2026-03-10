@@ -329,7 +329,7 @@ defmodule ArcanaWeb.MaintenanceLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:maintenance}>
+    <.dashboard_layout stats={@stats} current_tab={:maintenance} base_path={@base_path}>
       <div class="arcana-maintenance">
         <h2>Maintenance</h2>
         <p class="arcana-tab-description">

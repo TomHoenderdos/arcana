@@ -500,7 +500,7 @@ defmodule ArcanaWeb.GraphLive do
       |> Enum.reject(fn {_k, v} -> is_nil(v) end)
       |> Enum.into(%{})
 
-    "/arcana/graph?" <> URI.encode_query(params)
+    "#{socket.assigns.base_path}/graph?" <> URI.encode_query(params)
   end
 
   defp has_any_graph_data?(collections) do
@@ -532,7 +532,7 @@ defmodule ArcanaWeb.GraphLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.dashboard_layout stats={@stats} current_tab={:graph}>
+    <.dashboard_layout stats={@stats} current_tab={:graph} base_path={@base_path}>
       <div class="arcana-graph">
         <h2>Graph</h2>
         <p class="arcana-tab-description">
@@ -596,6 +596,7 @@ defmodule ArcanaWeb.GraphLive do
                 page={@entities_page}
                 total={@entities_total}
                 total_pages={total_pages(@entities_total)}
+                base_path={@base_path}
               />
             <% :relationships -> %>
               <.relationships_view
@@ -692,7 +693,7 @@ defmodule ArcanaWeb.GraphLive do
       <% end %>
 
       <%= if @entity_details do %>
-        <.entity_detail_panel details={@entity_details} />
+        <.entity_detail_panel details={@entity_details} base_path={@base_path} />
       <% end %>
     </div>
     """
@@ -743,7 +744,7 @@ defmodule ArcanaWeb.GraphLive do
             <div class="arcana-mention-preview">
               <p><%= String.slice(mention.context || mention.chunk_text || "", 0, 200) %></p>
               <a
-                href={"/arcana/documents?doc=#{mention.document_id}"}
+                href={"#{@base_path}/documents?doc=#{mention.document_id}"}
                 class="arcana-view-in-docs"
               >
                 View in Documents →
