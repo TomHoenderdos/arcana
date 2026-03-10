@@ -24,11 +24,21 @@ defmodule ArcanaWeb.Router do
     * `:on_mount` - Optional list of `Phoenix.LiveView.on_mount/1` callbacks
       to add to the dashboard's live_session.
 
+    * `:session` - Optional list of `{module, function, args}` tuples for
+      generating additional session data. Each MFA receives the `conn` as the
+      first argument. Useful for passing authentication tokens to the LiveView.
+
   ## Example with options
 
       arcana_dashboard "/arcana",
         repo: MyApp.Repo,
         on_mount: [MyAppWeb.Auth]
+
+  ## Example with Ash Authentication
+
+      arcana_dashboard "/arcana",
+        on_mount: [AshAuthentication.Phoenix.LiveSession],
+        session: [{AshAuthentication.Phoenix.LiveSession, :generate_session, []}]
 
   """
 
@@ -85,8 +95,9 @@ defmodule ArcanaWeb.Router do
   def __options__(base_path, options) do
     live_socket_path = Keyword.get(options, :live_socket_path, "/live")
     repo = Keyword.get(options, :repo)
+    extra_session = List.wrap(options[:session])
 
-    session_args = [repo, base_path]
+    session_args = [repo, base_path, extra_session]
 
     {
       :arcana_dashboard,
@@ -103,10 +114,14 @@ defmodule ArcanaWeb.Router do
   end
 
   @doc false
-  def __session__(_conn, repo, base_path) do
-    %{
+  def __session__(conn, repo, base_path, extra_session) do
+    base = %{
       "repo" => repo || Application.get_env(:arcana, :repo),
       "base_path" => base_path
     }
+
+    Enum.reduce(extra_session, base, fn {m, f, a}, acc ->
+      Map.merge(acc, apply(m, f, [conn | a]) || %{})
+    end)
   end
 end
